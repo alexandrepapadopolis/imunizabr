@@ -1,0 +1,5 @@
+{
+  "name": "imunizaBR",
+  "app_id": "15d97e9e",
+  "gulpStartupTasks": ["sass", "watch"]
+}

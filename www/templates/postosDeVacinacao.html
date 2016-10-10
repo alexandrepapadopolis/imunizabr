@@ -1,0 +1,12 @@
+<ion-view title="Postos de Vacinação" cache-view="false" ng-controller="PostosDeVacinacaoController">
+  <ion-content padding="true" class="has-header">
+    <div id="postosDeVacinacao-button-bar1" style="border-radius:10px 10px 10px 10px;" class="button-bar">
+      <button id="postosDeVacinacao-button9" class="button button-assertive  button-block button-outline">Casa</button>
+      <button id="postosDeVacinacao-button10" class="button button-assertive  button-block button-outline">Trabalho</button>
+      <button id="postosDeVacinacao-button11" class="button button-assertive  button-block button-outline">Aqui</button>
+    </div>
+    <ui-gmap-google-map ng-if="map.center" center="map.center" zoom="map.zoom" options="map.options" events="map.events">
+      <ui-gmap-marker coords="map.marker.coords" idkey="map.marker.id" options="map.marker.options"></ui-gmap-marker>
+    </ui-gmap-google-map>
+  </ion-content>
+</ion-view>

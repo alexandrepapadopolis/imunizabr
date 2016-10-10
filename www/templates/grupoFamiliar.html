@@ -1,0 +1,57 @@
+<ion-view title="Grupo Familiar" cache-view="false" ng-controller="GrupoFamiliarController as vm">
+    <ion-content padding="true" class="has-header">
+        <ion-list>
+            <ion-item ng-repeat="b in vm.registros | orderBy:'nascimento' track by $index" ng-click="vm.showEditRegistroModal(b)">
+              <div style="float: left" ng-switch on="b.sexo">
+                <div ng-switch-when="Feminino"><i class="icon ion-female"></i>&nbsp;</div>
+                <div ng-switch-when="Masculino"><i class="icon ion-male"></i>&nbsp;</div>
+              </div>
+              <div style="float: left"> {{ b.nome }}</div>
+              <div style="float: right">{{ b.nascimento | date:"dd.MM.yyyy" }}</div>
+            </ion-item>
+        </ion-list>
+        <a ng-click="vm.showAddRegistroModal()" class="button button-assertive  button-block">Incluir novo membro</a>
+    </ion-content>
+
+    <script id="add-or-edit-registro.html" type="text/ng-template">
+      <ion-modal-view>
+        <ion-header-bar class="bar-assertive">
+          <h1 class="title">{{ action }} Membro</h1>
+          <div class="buttons">
+            <button ng-hide="isAdd" ng-click="deleteRegistro()" class="button button-icon icon ion-trash-a"></button>
+          </div>
+        </ion-header-bar>
+        <ion-content>
+          <form name="Form" class="list" novalidate="" ng-submit="saveRegistro(Form)">
+
+            <div class="list list-inset">
+              <label class="item item-input"  ng-class="{ 'has-errors' : Form.nome.$invalid && Form.$submitted, 'no-errors' : Form.nome.$valid && Form.$submitted}">
+                <span class="input-label">Nome</span>
+                <input type="text" name="nome" data-ng-model="dados.nome" ng-minlength="5" ng-maxlength="50" required>
+              </label>
+              <div class="error-container last-error-container" ng-show="Form.nome.$error && Form.$submitted" ng-messages="Form.nome.$error" ng-messages-include="templates/error-list.html"></div>
+
+              <label class="item item-input"  ng-class="{ 'has-errors' : Form.nascimento.$invalid && Form.$submitted, 'no-errors' : Form.nascimento.$valid && Form.$submitted}">
+                <span class="input-label">Data de nascimento: &nbsp;</span>
+                <input type="date" name="nascimento" data-ng-model="dados.nascimento" ng-minlength="10" ng-maxlength="10" required>
+              </label>
+              <div class="error-container last-error-container" ng-show="Form.nascimento.$error && Form.$submitted" ng-messages="Form.nascimento.$error" ng-messages-include="templates/error-list.html"></div>
+
+              <label class="item item-input item-select" ng-class="{ 'has-errors' : Form.sexo.$invalid && Form.$submitted, 'no-errors' : Form.sexo.$valid && Form.$submitted}">
+                <span class="input-label">Sexo</span>
+                <select name="sexo" data-ng-model="dados.sexo" required>
+                  <option value="Feminino">Feminino</option>
+                  <option value="Masculino">Masculino</option>
+                </select>
+              </label>
+              <div class="error-container last-error-container" ng-show="Form.sexo.$error && Form.$submitted" ng-messages="Form.sexo.$error" ng-messages-include="templates/error-list.html"></div>
+            </div>
+            <div class="padding text-center">
+              <button type="submit" class="button icon-left ion-checkmark balanced-bg light">Gravar</button>
+              <button type="button" class="button icon-left ion-reply assertive-bg light" ng-click="closeModal()">Cancelar</button>
+            </div>
+          </form>
+        </ion-content>
+      </ion-modal-view>
+    </script>
+</ion-view>

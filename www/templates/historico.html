@@ -1,0 +1,119 @@
+<ion-view title="Caderneta de Vacinação" cache-view="false" ng-controller="RegistroDeVacinaController as vm">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+
+  <ion-content padding="true" class="has-header">
+
+    <div class="row item-divider">
+      <div class="col-10 text-center"><i class="icon ion-ios-help-outline"></i>&nbsp;</div>
+      <div class="col-90">Ver a caderneta de quem?</div>
+    </div>
+
+    <ion-list>
+      <div ng-repeat="pessoa in vm.registros | orderBy:'nascimento' track by $index">
+
+        <ion-item class="item"
+                  ng-click="togglePerson(pessoa)"
+                  ng-class="{active: isPersonShown(pessoa)}">
+          <i ng-class="isPersonShown(pessoa) ? 'ion-ios-eye' : 'ion-ios-eye-outline'" style="font-size: 25px;"></i>
+          &nbsp;{{ pessoa.nome }}
+        </ion-item>
+
+        <div ng-show="isPersonShown(pessoa) && !pessoaCaderneta(pessoa)" class="row assertive-border" style="height: 80px;">
+          <div class="col col-center" style="border: 1px solid;border-radius: 10px;">
+            <h4 align="center">Nenhuma vacina registrada!</h4>
+          </div>
+        </div>
+
+        <div ng-show="isPersonShown(pessoa) && pessoaCaderneta(pessoa)">
+          <div class="item-accordion"
+               ng-repeat="item in pessoa.vacinas  | orderBy:'item.nome' track by $index"
+               ng-show="isPersonShown(pessoa)">
+
+            <div style="margin:10px;"><b>{{ item.nome }}</b></div>
+
+            <div ng-repeat="grupo in item.grupos">
+              <ion-item class="item-text-wrap"
+                        ng-class-odd="'cssOdd'" ng-class-even="'cssEven'"
+                        ng-repeat="dose in grupo.doses | filter: buscaCaderneta | orderBy:'dose.numero' track by $index">
+                {{ dose.nome }}:
+                {{ dose.dataExecutada ? dose.dataExecutada : dose.dataProgramada  | date:"dd.MM.yyyy"}}
+                &nbsp;&nbsp;<i class="icon assertive icon ion-ios-checkmark-outline" ng-show="dose.dataExecutada" style="font-size: 20px;"></i>
+                <!--&nbsp;&nbsp;<i class="icon assertive ion-alert-circled" ng-show="avisaDose(dose)" style="font-size: 20px;"></i>-->
+                <br>{{ dose.dataExecutada ? '' : dose.descricao }}
+              </ion-item>
+            </div>
+            <div style="margin:10px;"></div>
+          </div>
+        </div>
+
+      </div>
+    </ion-list>
+  </ion-content>  </script>
+</ion-view>
+<!--
+
+<ion-view title="Caderneta de Vacinação" cache-view="false" ng-controller="RegistroDeVacinaController as vm">
+  <ion-content padding="true" class="has-header">
+    <div class="row item-divider">
+      <div class="col-10 text-center"><i class="icon ion-ios-help-outline"></i>&nbsp;</div>
+      <div class="col-90">Ver a caderneta de quem?</div>
+    </div>
+    <ion-list>
+      <ion-item
+        class="item-light item-icon-right"
+        ng-repeat="b in vm.registros | orderBy:'nascimento' track by $index"
+        ng-click="vm.showEditRegistroModal(b)">
+
+        {{ b.nome }}
+        <div><i class="icon assertive ion-ios-plus-outline"></i></div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+  <script id="add-or-edit-registro.html" type="text/ng-template">
+    <ion-modal-view>
+      <ion-header-bar class="bar-assertive">
+        <h1 class="title">Caderneta de Vacinação</h1>
+      </ion-header-bar>
+
+      <ion-content>
+        <ion-bar class="block royal-bg text-center">
+          <b>{{ dados.nome }}</b>
+        </ion-bar>
+
+        <div ng-show="!dados.vacinas.length" class="row assertive-border" style="height: 80px;">
+          <div class="col col-center" style="border: 1px solid;border-radius: 10px;">
+            <h4 align="center">Nenhuma vacina registrada!</h4>
+          </div>
+        </div>
+
+        <ion-list>
+          <div ng-repeat="item in dados.vacinas  | orderBy:'nome' track by $index">
+            <div class="row assertive-border">
+              <div class="col col-center box">
+                <b>{{ item.nome }}</b>
+              </div>
+            </div>
+            <div ng-repeat="grupo in item.grupos">
+              <ion-item class="item-text-wrap"
+                        ng-class-odd="'cssOdd'" ng-class-even="'cssEven'"
+                        ng-repeat="dose in grupo.doses | filter: buscaCaderneta | orderBy:'dose.numero' track by $index">
+                {{ dose.nome }}:
+                {{ dose.dataExecutada ? dose.dataExecutada : dose.dataProgramada  | date:"dd.MM.yyyy"}}
+                &nbsp;&nbsp;<i class="icon assertive icon ion-ios-checkmark-outline" ng-show="dose.dataExecutada" style="font-size: 20px;"></i>
+                <br>{{ dose.dataExecutada ? '' : dose.descricao }}
+              </ion-item>
+            </div>
+          </div>
+        </ion-list>
+
+        <div class="padding text-center">
+          <button type="button" class="button icon-left ion-reply assertive-bg light" ng-click="closeRegistroModal()">Voltar</button>
+        </div>
+      </ion-content>
+    </ion-modal-view>
+  </script>
+</script></ion-view>
+-->

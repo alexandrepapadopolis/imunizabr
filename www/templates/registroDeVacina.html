@@ -1,0 +1,126 @@
+<ion-view title="Registro de vacina" cache-view="false" ng-controller="RegistroDeVacinaController as vm">
+  <ion-content padding="true" class="has-header">
+    <div class="row item-divider">
+      <div class="col-10 text-center"><i class="icon ion-ios-help-outline" style="font-size: 20px;"></i>&nbsp;</div>
+      <div class="col-90">Registrar vacina para quem?</div>
+    </div>
+    <ion-list>
+      <ion-item
+        class="item-light item-icon-right"
+        ng-repeat="b in vm.registros | orderBy:'nascimento' track by $index"
+        ng-click="vm.showEditRegistroModal(b)">
+
+        {{ b.nome }}
+        <div><i class="icon assertive ion-ios-plus-outline"></i></div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+  <script id="add-or-edit-registro.html" type="text/ng-template">
+    <ion-modal-view>
+      <ion-header-bar class="bar-assertive">
+          <h1 class="title">Registro de Vacina</h1>
+      </ion-header-bar>
+
+      <ion-content>
+        <ion-bar class="item text-center balanced-bg">
+          <b>{{ dados.nome }}</b>
+        </ion-bar>
+
+        <ion-list>
+          <ion-radio ng-repeat="item in vacinas | filter: exibeVacina | orderBy:'nome' track by $index" ng-value="item._id" ng-model="dados.vacinas.id_vacina" ng-click="vm.showEditDoseModal(item)" name="id_vacina">{{item.nome}}
+          </ion-radio>
+        </ion-list>
+
+        <div class="padding text-center">
+          <button type="button" class="button icon-left ion-reply assertive-bg light" ng-click="closeRegistroModal()">Voltar</button>
+        </div>
+      </ion-content>
+    </ion-modal-view>
+  </script>
+
+  <script id="add-or-edit-dose.html" type="text/ng-template">
+    <ion-modal-view>
+      <ion-header-bar class="bar-assertive">
+        <h1 class="title">Registro de Vacina</h1>
+      </ion-header-bar>
+
+      <ion-content>
+        <ion-bar class="item text-center balanced-bg">
+          <b>{{ dados.nome }}</b>
+        </ion-bar>
+
+        <ion-bar class="item text-center energized-bg">
+          <b>{{ vacina.nome }}</b>
+        </ion-bar>
+
+        <form name="Form" class="list" novalidate="" ng-submit="saveRegistro(Form)">
+
+          <div>
+            <ion-toggle class="stable-bg" toggle-class="toggle-assertive"
+                        ng-model="faixaMembro.value"
+                        ng-true-value="'{{ dados.grupo }}'"
+                        ng-false-value="''">
+              Somente a minha faixa etária
+            </ion-toggle>
+          </div>
+
+          <ion-list>
+            <div ng-repeat="item in dados.vacinas | filter: vacina._id | orderBy:'item.nome' track by $index">
+              <div ng-repeat="grupo in item.grupos | filter: exibeGrupo track by $index">
+                <ion-item class="item-stable"
+                          ng-click="toggleGroup(grupo)"
+                          ng-class="{active: isGroupShown(grupo)}">
+                  <i class="icon" ng-class="isGroupShown(grupo) ? 'ion-minus' : 'ion-plus'"></i>
+                  &nbsp;
+                  {{ grupo.nome }} - {{ grupo.descricao }}
+                </ion-item>
+                <ion-item class="item-accordion"
+                          ng-repeat="dose in grupo.doses | orderBy:'dose.numero' track by $index"
+                          ng-show="isGroupShown(grupo)">
+                  <div class="light-bg">
+                    {{ dose.nome }} - {{ dose.descricao }}
+                    <div ng-show="!exibeDose(dose)">
+                      (Somente para o sexo {{ dose.sexo }})
+                    </div>
+                  </div>
+
+                  <label class="item-input-inset" ng-show="exibeDose(dose)">
+                    Quando?&nbsp;<input type="date" name="dataExecutada" class="dark-border" data-ng-model="dose.dataExecutada" ng-minlength="10" ng-maxlength="10">
+                    <button type="button" class="button button-small button-clear" ng-click="localVacina(dose)"><i class="icon ion-earth dark">&nbsp;Onde?</i></button>
+                  </label>
+                </ion-item>
+              </div>
+            </div>
+          </ion-list>
+
+          <div class="padding text-center stable-bg">
+            <button type="submit" class="button icon-left ion-checkmark balanced-bg light">Gravar</button>
+            <button type="button" class="button icon-left ion-reply assertive-bg light" ng-click="closeDoseModal()">Voltar</button>
+          </div>
+
+          <div class="padding">
+
+            <div class="box">
+              <b>{{ vacina.nome }}</b>
+            </div>
+
+            <ion-list>
+
+              <ion-item class="item-text-wrap cssEven"><b>Descrição:</b><br>{{ vacina.descricao || "&nbsp;" }}</ion-item>
+
+              <ion-item class="item-text-wrap cssOdd"><b>Indicações:</b><br>{{ vacina.indicacoes || "&nbsp;" }}</ion-item>
+
+              <ion-item class="item-text-wrap cssEven"><b>Doenças evitadas:</b><br>{{ vacina.doencasEvitadas || "&nbsp;" }}</ion-item>
+
+              <ion-item class="item-text-wrap cssOdd"><b>Contra-Indicações:</b><br>{{ vacina.contraIndicacoes || "&nbsp;" }}</ion-item>
+
+              <ion-item class="item-text-wrap cssEven"><b>Efeitos adversos:</b><br>{{ vacina.eventosAdversos || "&nbsp;" }}</ion-item>
+            </ion-list>
+          </div>
+        </form>
+
+      </ion-content>
+    </ion-modal-view>
+  </script>
+</ion-view>

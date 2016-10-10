@@ -1,0 +1,266 @@
+<!--
+  <ion-content padding="true" class="has-header" ng-controller="MeusDadosController">
+        <div class="list card">
+            <div class="item item-divider">Cartão Nacional de Saúde</div>
+            <div class="item item-body"></div>
+        </div>
+
+        <form name="Form" class="list" novalidate="" ng-submit="grava(Form)">
+          <label class="item item-input item-stacked-label"  ng-class="{ 'has-errors' : Form.nome.$invalid && Form.$submitted, 'no-errors' : Form.nome.$valid && Form.$submitted}">
+            <span class="input-label">Nome completo</span>
+            <input type="text" name="nome" data-ng-model="dados.nome" ng-minlength="5" ng-maxlength="50" required>
+          </label>
+          <div class="error-container last-error-container" ng-show="Form.nome.$error && Form.$submitted" ng-messages="Form.nome.$error" ng-messages-include="templates/error-list.html"></div>
+
+          <label class="item item-input"  ng-class="{ 'has-errors' : Form.nascimento.$invalid && Form.$submitted, 'no-errors' : Form.nascimento.$valid && Form.$submitted}">
+            <span class="input-label">Data de nascimento: &nbsp;</span>
+            <input type="text"  name="nascimento" ui-mask="99/99/9999" ui-mask-placeholder model-view-value="{{true}}" data-ng-model="dados.nascimento" ng-minlength="10" ng-maxlength="10"  required>
+          </label>
+          <div class="error-container last-error-container" ng-show="Form.nascimento.$error && Form.$submitted" ng-messages="Form.nascimento.$error" ng-messages-include="templates/error-list.html"></div>
+
+          <label class="item item-input item-stacked-label" ng-class="{ 'has-errors' : Form.mae.$invalid && Form.$submitted, 'no-errors' : Form.mae.$valid && Form.$submitted}">
+            <span class="input-label">Nome da mãe</span>
+            <input type="text" name="mae" data-ng-model="dados.mae" ng-minlength="5" ng-maxlength="50" required>
+          </label>
+          <div class="error-container last-error-container" ng-show="Form.mae.$error && Form.$submitted" ng-messages="Form.mae.$error" ng-messages-include="templates/error-list.html"></div>
+
+          <label class="item item-input item-stacked-label" ng-class="{ 'has-errors' : Form.cidade_nascimento.$invalid && Form.$submitted, 'no-errors' : Form.cidade_nascimento.$valid && Form.$submitted}">
+            <span class="input-label">Cidade de nascimento</span>
+            <input type="search" name="cidade_nascimento" data-ng-model="dados.cidade_nascimento" ng-minlength="2" ng-maxlength="50" required>
+          </label>
+          <div class="error-container last-error-container" ng-show="Form.cidade_nascimento.$error && Form.$submitted" ng-messages="Form.cidade_nascimento.$error" ng-messages-include="templates/error-list.html"></div>
+
+          <div class="item item-input item-stacked-label">
+            <div class="item-input-inset">CEP: &nbsp;
+              <label class="item item-input">
+                <input type="search" name="cep" ui-mask="99999-999" ui-mask-placeholder data-ng-model="dados.cep" maxlength="9">
+              </label>
+              <span class="button button-clear button-outline" ng-click="buscaCEP(dados.cep)">
+                <i class="icon ion-search"></i>
+              </span>
+            </div>
+            <div class="error-container" ng-show="resultCEP">
+              <input class="input-label text-center" type="text" readonly value="{{resultCEP}}">
+            </div>
+          </div>
+
+          <label class="item item-input item-stacked-label" ng-class="{ 'has-errors' : Form.endereco.$invalid && Form.$submitted, 'no-errors' : Form.endereco.$valid && Form.$submitted}">
+              <span class="input-label">Endereço</span>
+              <input type="text" name="endereco" data-ng-model="dados.endereco" ng-minlength="2" ng-maxlength="80" required>
+          </label>
+          <div class="error-container last-error-container" ng-show="Form.endereco.$error && Form.$submitted" ng-messages="Form.endereco.$error" ng-messages-include="templates/error-list.html"></div>
+
+          <label class="item item-input item-stacked-label">
+              <span class="input-label">Complemento</span>
+              <input type="text" name="complemento" data-ng-model="dados.complemento" ng-maxlength="50">
+          </label>
+
+          <label class="item item-input item-stacked-label" ng-class="{ 'has-errors' : Form.bairro.$invalid && Form.$submitted, 'no-errors' : Form.bairro.$valid && Form.$submitted}">
+              <span class="input-label">Bairro</span>
+              <input type="text" name="bairro" data-ng-model="dados.bairro" ng-minlength="2" ng-maxlength="50" required>
+          </label>
+          <div class="error-container last-error-container" ng-show="Form.bairro.$error && Form.$submitted" ng-messages="Form.bairro.$error" ng-messages-include="templates/error-list.html"></div>
+
+          <label class="item item-input item-stacked-label" ng-class="{ 'has-errors' : Form.cidade.$invalid && Form.$submitted, 'no-errors' : Form.cidade.$valid && Form.$submitted}">
+            <span class="input-label">Cidade</span>
+            <input type="text" name="cidade" data-ng-model="dados.cidade" ng-minlength="2" ng-maxlength="50" required>
+          </label>
+          <div class="error-container last-error-container" ng-show="Form.cidade.$error && Form.$submitted" ng-messages="Form.cidade.$error" ng-messages-include="templates/error-list.html"></div>
+
+          <label class="item item-input item-select" ng-class="{ 'has-errors' : Form.uf.$invalid && Form.$submitted, 'no-errors' : Form.uf.$valid && Form.$submitted}">
+              <span class="input-label">UF</span>
+              <select name="uf" data-ng-model="dados.uf" required>
+                  <option value="AC">Acre</option>
+                  <option value="AL">Alagoas</option>
+                  <option value="AP">Amapá</option>
+                  <option value="AM">Amazonas</option>
+                  <option value="BA">Bahia</option>
+                  <option value="CE">Ceará</option>
+                  <option value="DF">Dsitrito Federal</option>
+                  <option value="ES">Espírito Santo</option>
+                  <option value="GO">Goiás</option>
+                  <option value="MA">Maranhão</option>
+                  <option value="MT">Mato Grosso</option>
+                  <option value="MS">Mato Grosso do Sul</option>
+                  <option value="MG">Minas Gerais</option>
+                  <option value="PA">Pará</option>
+                  <option value="PB">Paraíba</option>
+                  <option value="PE">Pernambuco</option>
+                  <option value="PI">Piauí</option>
+                  <option value="RJ">Rio de Janeiro</option>
+                  <option value="RN">Rio Grande do Norte</option>
+                  <option value="RS">Rio Grande do Sul</option>
+                  <option value="RO">Rondônia</option>
+                  <option value="RR">Roraima</option>
+                  <option value="SC">Santa Catarina</option>
+                  <option value="SP">São Paulo</option>
+                  <option value="SE">Sergipe</option>
+                  <option value="TO">Tocantins</option>
+              </select>
+          </label>
+          <div class="error-container last-error-container" ng-show="Form.uf.$error && Form.$submitted" ng-messages="Form.uf.$error" ng-messages-include="templates/error-list.html"></div>
+
+          <button class="button button-calm button-block" type="submit">Gravar</button>
+        </form>
+
+    </ion-content>
+</ion-view>
+
+<ion-view title="Meus dados">
+  <ion-pane ng-controller="MeusDadosController as vm">
+    <ion-header-bar class="bar-stable">
+      <h1 class="title">🎂  Birthdays  🎉</h1>
+      <div class="buttons">
+        <button ng-click="vm.showAddRegistrosModal()" class="button button-icon icon ion-android-add"></button>
+      </div>
+
+    </ion-header-bar>
+    <ion-content>
+      <ion-list>
+        <ion-item ng-repeat="b in vm.registros" ng-click="vm.showEditRegistroModal(b)">
+          <div style="float: left">{{ b.Name }}</div>
+          <div style="float: right">{{ b.Date | date:"dd MMMM yyyy" }}</div>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-pane>
+
+
+  <script id="add-or-edit-registro.html" type="text/ng-template">
+    <ion-modal-view>
+      <ion-header-bar>
+        <h1 class="title">{{ action }} Birthday</h1>
+        <div class="buttons">
+          <button ng-hide="isAdd" ng-click="deleteBirthday()" class="button button-icon icon ion-trash-a"></button>
+        </div>
+      </ion-header-bar>
+      <ion-content>
+        <div class="list list-inset">
+          <label class="item item-input">
+            <input type="text" placeholder="Name" ng-model="birthday.Name">
+          </label>
+          <label class="item item-input">
+            <input type="date" placeholder="Birthday" ng-model="birthday.Date">
+          </label>
+        </div>
+        <div class="padding">
+          <button ng-click="saveBirthday()" class="button button-block button-positive activated">Save</button>
+        </div>
+      </ion-content>
+    </ion-modal-view>
+  </script>
+
+
+-->
+  <ion-content padding="true" class="has-header" ng-controller="MeusDadosController">
+        <!--
+        <div class="list card">
+            <div class="item item-divider">Cartão Nacional de Saúde</div>
+            <div class="item item-body"></div>
+        </div>
+        -->
+        <div class="list card">
+        </div>
+        <form name="Form" class="list" novalidate="" ng-submit="saveRegistro(Form)">
+          <label class="item item-input item-stacked-label"  ng-class="{ 'has-errors' : Form.nome.$invalid && Form.$submitted, 'no-errors' : Form.nome.$valid && Form.$submitted}">
+            <span class="input-label">Nome completo</span>
+            <input type="text" name="nome" data-ng-model="dados.nome" ng-minlength="5" ng-maxlength="50" required>
+          </label>
+          <div class="error-container last-error-container" ng-show="Form.nome.$error && Form.$submitted" ng-messages="Form.nome.$error" ng-messages-include="templates/error-list.html"></div>
+
+          <label class="item item-input"  ng-class="{ 'has-errors' : Form.nascimento.$invalid && Form.$submitted, 'no-errors' : Form.nascimento.$valid && Form.$submitted}">
+            <span class="input-label">Data de nascimento: &nbsp;</span>
+            <input type="date"  name="nascimento" data-ng-model="dados.nascimento" ng-minlength="10" ng-maxlength="10"  required>
+          </label>
+          <div class="error-container last-error-container" ng-show="Form.nascimento.$error && Form.$submitted" ng-messages="Form.nascimento.$error" ng-messages-include="templates/error-list.html"></div>
+
+          <label class="item item-input item-stacked-label" ng-class="{ 'has-errors' : Form.mae.$invalid && Form.$submitted, 'no-errors' : Form.mae.$valid && Form.$submitted}">
+            <span class="input-label">Nome da mãe</span>
+            <input type="text" name="mae" data-ng-model="dados.mae" ng-minlength="5" ng-maxlength="50" required>
+          </label>
+          <div class="error-container last-error-container" ng-show="Form.mae.$error && Form.$submitted" ng-messages="Form.mae.$error" ng-messages-include="templates/error-list.html"></div>
+
+          <label class="item item-input item-stacked-label" ng-class="{ 'has-errors' : Form.cidade_nascimento.$invalid && Form.$submitted, 'no-errors' : Form.cidade_nascimento.$valid && Form.$submitted}">
+            <span class="input-label">Cidade de nascimento</span>
+            <input type="search" name="cidade_nascimento" data-ng-model="dados.cidade_nascimento" ng-minlength="2" ng-maxlength="50" required>
+          </label>
+          <div class="error-container last-error-container" ng-show="Form.cidade_nascimento.$error && Form.$submitted" ng-messages="Form.cidade_nascimento.$error" ng-messages-include="templates/error-list.html"></div>
+
+          <div class="item item-input item-stacked-label">
+            <div class="item-input-inset">CEP: &nbsp;
+              <label class="item item-input">
+                <input type="search" name="cep" ui-mask="99999-999" ui-mask-placeholder data-ng-model="dados.cep" maxlength="9">
+              </label>
+              <span class="button button-clear button-outline" ng-click="buscaCEP(dados.cep)">
+                <i class="icon ion-search"></i>
+              </span>
+            </div>
+            <div class="error-container" ng-show="resultCEP">
+              <input class="input-label text-center" type="text" readonly value="{{resultCEP}}">
+            </div>
+          </div>
+
+          <!--
+
+          <label class="item item-input item-stacked-label" ng-class="{ 'has-errors' : Form.endereco.$invalid && Form.$submitted, 'no-errors' : Form.endereco.$valid && Form.$submitted}">
+              <span class="input-label">Endereço</span>
+              <input type="text" name="endereco" data-ng-model="dados.endereco" ng-minlength="2" ng-maxlength="80" required>
+          </label>
+          <div class="error-container last-error-container" ng-show="Form.endereco.$error && Form.$submitted" ng-messages="Form.endereco.$error" ng-messages-include="templates/error-list.html"></div>
+
+          <label class="item item-input item-stacked-label">
+              <span class="input-label">Complemento</span>
+              <input type="text" name="complemento" data-ng-model="dados.complemento" ng-maxlength="50">
+          </label>
+
+          <label class="item item-input item-stacked-label" ng-class="{ 'has-errors' : Form.bairro.$invalid && Form.$submitted, 'no-errors' : Form.bairro.$valid && Form.$submitted}">
+              <span class="input-label">Bairro</span>
+              <input type="text" name="bairro" data-ng-model="dados.bairro" ng-minlength="2" ng-maxlength="50" required>
+          </label>
+          <div class="error-container last-error-container" ng-show="Form.bairro.$error && Form.$submitted" ng-messages="Form.bairro.$error" ng-messages-include="templates/error-list.html"></div>
+
+          <label class="item item-input item-stacked-label" ng-class="{ 'has-errors' : Form.cidade.$invalid && Form.$submitted, 'no-errors' : Form.cidade.$valid && Form.$submitted}">
+            <span class="input-label">Cidade</span>
+            <input type="text" name="cidade" data-ng-model="dados.cidade" ng-minlength="2" ng-maxlength="50" required>
+          </label>
+          <div class="error-container last-error-container" ng-show="Form.cidade.$error && Form.$submitted" ng-messages="Form.cidade.$error" ng-messages-include="templates/error-list.html"></div>
+
+          <label class="item item-input item-select" ng-class="{ 'has-errors' : Form.uf.$invalid && Form.$submitted, 'no-errors' : Form.uf.$valid && Form.$submitted}">
+              <span class="input-label">UF</span>
+              <select name="uf" data-ng-model="dados.uf" required>
+                  <option value="AC">Acre</option>
+                  <option value="AL">Alagoas</option>
+                  <option value="AP">Amapá</option>
+                  <option value="AM">Amazonas</option>
+                  <option value="BA">Bahia</option>
+                  <option value="CE">Ceará</option>
+                  <option value="DF">Dsitrito Federal</option>
+                  <option value="ES">Espírito Santo</option>
+                  <option value="GO">Goiás</option>
+                  <option value="MA">Maranhão</option>
+                  <option value="MT">Mato Grosso</option>
+                  <option value="MS">Mato Grosso do Sul</option>
+                  <option value="MG">Minas Gerais</option>
+                  <option value="PA">Pará</option>
+                  <option value="PB">Paraíba</option>
+                  <option value="PE">Pernambuco</option>
+                  <option value="PI">Piauí</option>
+                  <option value="RJ">Rio de Janeiro</option>
+                  <option value="RN">Rio Grande do Norte</option>
+                  <option value="RS">Rio Grande do Sul</option>
+                  <option value="RO">Rondônia</option>
+                  <option value="RR">Roraima</option>
+                  <option value="SC">Santa Catarina</option>
+                  <option value="SP">São Paulo</option>
+                  <option value="SE">Sergipe</option>
+                  <option value="TO">Tocantins</option>
+              </select>
+          </label>
+          <div class="error-container last-error-container" ng-show="Form.uf.$error && Form.$submitted" ng-messages="Form.uf.$error" ng-messages-include="templates/error-list.html"></div>
+          -->
+
+          <button class="button button-calm button-block" type="submit">Gravar</button>
+        </form>
+
+    </ion-content>
+</ion-view>

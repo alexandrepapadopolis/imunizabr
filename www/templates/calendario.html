@@ -1,0 +1,29 @@
+<ion-view title="Calendário de Vacinação" cache-view="false" ng-controller="RegistroDeVacinaController as vm">
+  <ion-content padding="true" class="has-header">
+
+    <ion-list>
+      <div ng-repeat="pessoa in vm.registros | filter: pessoaCalendario | orderBy:'nascimento' track by $index">
+
+        <ion-item class="item box">
+          <b>{{ pessoa.nome }}</b>
+        </ion-item>
+
+        <div ng-repeat="item in pessoa.vacinas  | orderBy:'item.nome' track by $index">
+
+          <div style="margin:10px;"><b>{{ item.nome }}</b></div>
+
+          <div ng-repeat="grupo in item.grupos">
+            <ion-item class="item-text-wrap"
+                      ng-class-odd="'cssOdd'" ng-class-even="'cssEven'"
+                      ng-repeat="dose in grupo.doses | filter: buscaCalendario | orderBy:'dose.numero' track by $index">
+              {{ dose.nome }}:
+              {{ dose.dataExecutada ? dose.dataExecutada : dose.dataProgramada  | date:"dd.MM.yyyy"}}
+              &nbsp;&nbsp;<i class="icon assertive ion-alert-circled" ng-show="$first" style="font-size: 20px;"></i>
+              <br>{{ dose.dataExecutada ? '' : dose.descricao }}
+            </ion-item>
+          </div>
+        </div>
+        <div style="margin:10px;"></div>
+      </div>
+    </ion-list>
+  </ion-content>  </script></ion-view>
